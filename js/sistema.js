@@ -1,0 +1,5 @@
+class Sistema {
+    constructor() {
+        
+    }
+}
