@@ -8,26 +8,26 @@ class Sistema {
 
     cargarDatosIniciales() {
         //Clientes
-        this.clientes.push(new Cliente("Pablo Ramirez", "Qwer1234@!", "Max", "Mediano", null));
-        this.clientes.push(new Cliente("Miriam Ramirez", "Qwer1234@!", "Luna", "Chico", null));
-        this.clientes.push(new Cliente("Daniel Gutierrez", "Qwer1234@!", "Rocky", "Grande", null));
-        this.clientes.push(new Cliente("Maria Sanchez", "Qwer1234@!", "Canela", "Mediano", null));
-        this.clientes.push(new Cliente("Celia Fernandez", "Qwer1234@!", "Toby", "Chico", null));
-        this.clientes.push(new Cliente("Oscar Castillo", "Qwer1234@!", "Nala", "Grande", null));
-        this.clientes.push(new Cliente("Joaquin Duran", "Qwer1234@!", "Thor", "Grande", null));
-        this.clientes.push(new Cliente("Ana Castro", "Qwer1234@!", "Pelusa", "Chico", null));
-        this.clientes.push(new Cliente("Verónica Rojas", "Qwer1234@!", "Simba", "Mediano", null));
-        this.clientes.push(new Cliente("Juan Fuentes", "Qwer1234@!", "Bella", "Chico", null));
-        this.clientes.push(new Cliente("Enrique Reyes", "Qwer1234@!", "Bruno", "Grande", null));
-        this.clientes.push(new Cliente("Yolanda Perez", "Qwer1234@!", "Kira", "Mediano", null));
-        this.clientes.push(new Cliente("Sofía Gil", "Qwer1234@!", "Zeus", "Grande", null));
-        this.clientes.push(new Cliente("Ramon Flores", "Qwer1234@!", "Lola", "Chico", null));
-        this.clientes.push(new Cliente("Margarita Castillo", "Qwer1234@!", "Coco", "Mediano", null));
-        this.clientes.push(new Cliente("Irene Rubio", "Qwer1234@!", "Sasha", "Chico", null));
-        this.clientes.push(new Cliente("Domingo Garcia", "Qwer1234@!", "Duke", "Grande", null));
-        this.clientes.push(new Cliente("Manuela Leon", "Qwer1234@!", "Maya", "Mediano", null));
-        this.clientes.push(new Cliente("Manuel Leon", "Qwer1234@!", "Rex", "Grande", null));
-        this.clientes.push(new Cliente("Pablo Torres", "Qwer1234@!", "Andrew", "Chico", null));
+        this.clientes.push(new Cliente("Pablo Ramirez", "Qwer1234@!", "Max", "Mediano"));
+        this.clientes.push(new Cliente("Miriam Ramirez", "Qwer1234@!", "Luna", "Chico"));
+        this.clientes.push(new Cliente("Daniel Gutierrez", "Qwer1234@!", "Rocky", "Grande"));
+        this.clientes.push(new Cliente("Maria Sanchez", "Qwer1234@!", "Canela", "Mediano"));
+        this.clientes.push(new Cliente("Celia Fernandez", "Qwer1234@!", "Toby", "Chico"));
+        this.clientes.push(new Cliente("Oscar Castillo", "Qwer1234@!", "Nala", "Grande"));
+        this.clientes.push(new Cliente("Joaquin Duran", "Qwer1234@!", "Thor", "Grande"));
+        this.clientes.push(new Cliente("Ana Castro", "Qwer1234@!", "Pelusa", "Chico"));
+        this.clientes.push(new Cliente("Verónica Rojas", "Qwer1234@!", "Simba", "Mediano"));
+        this.clientes.push(new Cliente("Juan Fuentes", "Qwer1234@!", "Bella", "Chico"));
+        this.clientes.push(new Cliente("Enrique Reyes", "Qwer1234@!", "Bruno", "Grande"));
+        this.clientes.push(new Cliente("Yolanda Perez", "Qwer1234@!", "Kira", "Mediano"));
+        this.clientes.push(new Cliente("Sofía Gil", "Qwer1234@!", "Zeus", "Grande"));
+        this.clientes.push(new Cliente("Ramon Flores", "Qwer1234@!", "Lola", "Chico"));
+        this.clientes.push(new Cliente("Margarita Castillo", "Qwer1234@!", "Coco", "Mediano"));
+        this.clientes.push(new Cliente("Irene Rubio", "Qwer1234@!", "Sasha", "Chico"));
+        this.clientes.push(new Cliente("Domingo Garcia", "Qwer1234@!", "Duke", "Grande"));
+        this.clientes.push(new Cliente("Manuela Leon", "Qwer1234@!", "Maya", "Mediano"));
+        this.clientes.push(new Cliente("Manuel Leon", "Qwer1234@!", "Rex", "Grande"));
+        this.clientes.push(new Cliente("Pablo Torres", "Qwer1234@!", "Andrew", "Chico"));
         //Paseadores
         this.paseadores.push(new Paseador(1, "Luis Herrera", "luis.herrera", "Qwer1234@!", 47));
         this.paseadores.push(new Paseador(2, "Carla Morales", "carla.morales", "Qwer1234@!", 38));
