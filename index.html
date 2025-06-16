@@ -9,8 +9,8 @@
     <meta name="keywords" content="Paseadores, Perros, Paseos">
     <title>Servicio de Paseadores</title>
     <link rel="stylesheet" href="css/estilos.css">
-    <script src="js/clases.js"></script>
     <script src="js/sistema.js"></script>
+    <script src="js/clases.js"></script>
     <script src="js/codigo.js"></script>
 </head>
 
@@ -20,90 +20,62 @@
             <img id="logo" src="https://p1.develotion.com/logo.jpg" alt="logo" />
             <nav>
                 <ul id="navPrincipal">
-                    <li>
-                        <a>Sección 1</a>
+                    <li id="btnSeccionLogin" class="btnSeccion invitado">
+                        <a>Login</a>
                     </li>
-                    <li>
-                        <a>Sección 2</a>
+                    <li id="btnSeccionRegistro" class="btnSeccion invitado">
+                        <a>Registrar</a>
                     </li>
-                    <li>
-                        <a>Sección 3</a>
+                    <li id="btnSeccionUsuario" class=" btnSeccion cliente">
+                        <a>Usuario</a>
                     </li>
-                    <li>
-                        <a>Sección 4</a>
+                    <li id="btnSeccionPaseador" class=" btnSeccion paseador">
+                        <a>Paseador</a>
                     </li>
+                    <li id="btnSeccionSalir" class=" btnSeccion cliente paseador">
+                        <a>Cerrar Sesion</a>
+                    </li>
+                    <div id="aux">
+                        <p id="nombreUsuarioLogeado"></p>
+                    </div>
                 </ul>
             </nav>
         </header>
         <main>
-            <section>
-                <h1>Titulo 1</h1>
-                <h2>Titulo 2</h2>
-                <h3>Titulo 3</h3>
-                <h4>Titulo 4</h4>
-                <hr>
-                <h3>Inputs</h3>
-                <label for="txtTexto">txtTexto</label>
-                <input type="text" id="txtTexto" />
-                <label for="nbrNumero">nbrNumero</label>
-                <input type="number" id="nbrNumero" />
-                <label for="txtPass">txtPass</label>
-                <input type="password" id="txtPass" />
-                <label for="txtComentarios">Text Area</label>
-                <textarea id="txtComentarios"></textarea>
-                <label for="slcOpciones">Select</label>
-                <select id="slcOpciones">
-                    <option value="1">opcion 1</option>
-                    <option value="2">opcion 2</option>
-                    <option value="3">opcion 3</option>
-                </select>
-                <input type="button" value="Enviar" /><br />
-                <hr />
+            <section id="seccionLogin" class="seccion">
+                <h3>Ingreso de usuario</h3>
+                <label for="txtUsuario">Usuario</label>
+                <input type="text" id="txtUsuario"><br>
 
+                <label for="txtClave">Contraseña</label>
+                <input type="password" id="txtClave"><br>
+
+                <input type="button" id="btnLogin" value="Ingresar">
+                <p id="resultado"></p>
             </section>
 
-            <h3>Resumen</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Imagen</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            Nombre 1
-                        </td>
-                        <td>30</td>
-                        <td><img src="https://place-hold.it/100x100/aaa/imagen.jpg" alt="prueba"></td>
-                        <td>
-                            <input type="button" value="Acción" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            9
-                        </td>
-                        <td>30</td>
-                        <td><img src="https://place-hold.it/100x100/aaa/imagen.jpg" alt="prueba"></td>
-                        <td>
-                            <input type="button" value="Accion" />
-                        </td>
-                    </tr>
+            <section id="seccionRegistro" class="seccion">
+                <h3>Registro de cliente</h3>
+                <label for="txtRegistroUsuario">Usuario</label>
+                <input type="text" id="txtRegistroUsuario"><br>
 
-                </tbody>
-            </table>
+                <label for="txtRegistroClave">Contraseña</label>
+                <input type="password" id="txtRegistroClave"><br>
 
-            <p>
-                Donec dapibus arcu a diam commodo, vel vehicula orci volutpat.
-                Vestibulum convallis tempor mattis. Donec molestie semper leo vel
-                luctus. Curabitur quis nisi maximus, luctus lorem quis, dignissim
-                augue.
-            </p>
-            <hr />
+                <label for="txtRegistroRepetirClave">Repetir Contraseña</label>
+                <input type="password" id="txtRegistroRepetirClave"><br>
+
+                <label for="txtRegistroNombrePerro">Nombre del Perro</label>
+                <input type="text" id="txtRegistroNombrePerro"><br>
+
+                <label for="slcRegistroTamanoPerro">Tamano del perro</label>
+                <select id="slcRegistroTamanoPerro">
+                </select>
+                <br>
+
+                <input type="button" id="btnRegistro" value="Registrar">
+                <p id="pError"></p>
+            </section>
         </main>
         <footer>
             <a href="https://www.ort.edu.uy">Footer</a>
