@@ -54,9 +54,9 @@ class Sistema {
     ];
 
     this.tamanioPerros = [
-      new TamanioPerros(1, "Chico"),
-      new TamanioPerros(2, "Mediano"),
-      new TamanioPerros(3, "Grande")
+      new TamanioPerros(1, "Chico", 1),
+      new TamanioPerros(2, "Mediano", 2),
+      new TamanioPerros(3, "Grande", 4)
     ];
   }
 
@@ -74,6 +74,59 @@ class Sistema {
     }
 
     return elementoEliminado;
+  }
+
+  listarPaseadoresDisponibles(cliente) {
+    let paseadoresDisponibles = [];
+    let tamanio = this.obtenerElementoPorPropiedad(this.tamanioPerros, "tamanio", cliente.tamanioPerro);
+    for (let i = 0; i < this.paseadores.length; i++) {
+      const paseador = this.paseadores[i];
+      let cuposDisponibles = this.calcularCuposDisponibles(paseador);
+      if (cuposDisponibles < tamanio.cuposOcupados) continue;
+      let tamanioNoCompatible = this.verificarCompatibilidadTamanios(paseador, cliente);
+      if (tamanioNoCompatible !== cliente.tamanioPerro) paseadoresDisponibles.push(paseador);
+    }
+    return paseadoresDisponibles;
+  }
+
+  calcularCuposDisponibles(paseador) {
+    let cuposDisponibles = paseador.cuposMaximos;
+    for (let i = 0; i < this.contrataciones.length; i++) {
+      const contratacion = this.contrataciones[i];
+      if (contratacion.paseador === paseador.id) {
+        let cliente = this.obtenerElementoPorPropiedad(this.clientes, "nombreUsuario", contratacion.cliente);
+        let tamanio = this.obtenerElementoPorPropiedad(this.tamanioPerros, "tamanio", cliente.tamanioPerro);
+        cuposDisponibles -= tamanio.cuposOcupados;
+      }
+    }
+    return cuposDisponibles;
+  }
+
+  calcularPerrosAsignados(paseador) {
+    let perrosAsignados = 0;
+    for (let i = 0; i < this.contrataciones.length; i++) {
+      const contratacion = this.contrataciones[i];
+      if (contratacion.paseador === paseador.id) perrosAsignados++;
+    }
+    return perrosAsignados;
+  }
+
+  verificarCompatibilidadTamanios(paseador, cliente) {
+    let tamanioNoValido = "";
+    for (let i = 0; i < this.contrataciones.length; i++) {
+      const contratacion = this.contrataciones[i];
+      if (contratacion.paseador === paseador.id) {
+        let clienteContratacion = this.obtenerElementoPorPropiedad(this.clientes, "nombreUsuario", contratacion.cliente);
+        if (clienteContratacion.tamanioPerro === "Chico" && cliente.tamanioPerro === "Grande") {
+          tamanioNoValido = "Grande";
+          break;
+        } else if (clienteContratacion.tamanioPerro === "Grande" && cliente.tamanioPerro === "Chico") {
+          tamanioNoValido = "Chico";
+          break;
+        }
+      }
+    }
+    return tamanioNoValido;
   }
 
   validarFormatoClave(clave) {
@@ -144,14 +197,14 @@ class Sistema {
   verificarLogin(nomUsuario, clave) {
     let resultado = false;
     // buscar usuario cliente
-    let unUsuario = this.obtenerUsuario(
+    let unUsuario = this.obtenerElementoPorPropiedad(
       this.clientes,
       "nombreUsuario",
       nomUsuario
     );
     if (unUsuario === null) {
       // buscar si existe usuario paseador
-      unUsuario = this.obtenerUsuario(
+      unUsuario = this.obtenerElementoPorPropiedad(
         this.paseadores,
         "nombreUsuario",
         nomUsuario
@@ -170,9 +223,8 @@ class Sistema {
     return resultado;
   }
 
-  obtenerUsuario(arrElementos, propiedad, busqueda) {
+  obtenerElementoPorPropiedad(arrElementos, propiedad, busqueda) {
     let objeto = null;
-
     for (let i = 0; i < arrElementos.length; i++) {
       const unElemento = arrElementos[i];
       if (unElemento[propiedad] === busqueda) {

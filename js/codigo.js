@@ -31,6 +31,38 @@ function mostrarSeccion() {
   }
 }
 
+function mostrarSeccionPorId(idSeccion) {
+  ocultarSecciones();
+  document.querySelector("#" + idSeccion).style.display = "block";
+}
+
+function mostrarPaseadoresDisponibles() {
+  if (!usuarioLogeado) return;
+  let paseadoresDisponibles = sistema.listarPaseadoresDisponibles(usuarioLogeado);
+  if (paseadoresDisponibles.length === 0) return;
+  let tablaPaseadoresDisponibles =
+    `<thead>
+    <th>Nombre</th>
+    <th>Cupos Disponibles</th>
+    <th>Perros Asignados</th>
+    </thead>
+    <tbody>`;
+  for (let i = 0; i < paseadoresDisponibles.length; i++) {
+    const paseador = paseadoresDisponibles[i];
+    let cuposDisponibles = sistema.calcularCuposDisponibles(paseador);
+    let perrosAsignados = sistema.calcularPerrosAsignados(paseador);
+    tablaPaseadoresDisponibles +=
+      `<tr>
+      <td>${paseador.nombre}</td>
+      <td>${cuposDisponibles}</td>
+      <td>${perrosAsignados}</td>
+      </tr>`
+  }
+  tablaPaseadoresDisponibles += "</tbody>";
+  document.querySelector("#paseadoresDisponibles").innerHTML = tablaPaseadoresDisponibles;
+  mostrarSeccionPorId("seccionPaseadoresDisponibles");
+}
+
 function ocultarSecciones() {
   let seccion = document.querySelectorAll(".seccion");
   for (let i = 0; i < seccion.length; i++) {
@@ -65,7 +97,7 @@ function hacerLogin() {
     document.querySelector("#txtUsuario").value = "";
     document.querySelector("#txtClave").value = "";
     document.querySelector("#resultado").value = "";
-    usuarioLogeado = sistema.obtenerUsuario(
+    usuarioLogeado = sistema.obtenerElementoPorPropiedad(
       sistema.clientes,
       "nombreUsuario",
       nombre
@@ -73,8 +105,9 @@ function hacerLogin() {
 
     if (usuarioLogeado) {
       mostrarBotones("cliente");
+      mostrarPaseadoresDisponibles();
     } else {
-      usuarioLogeado = sistema.obtenerUsuario(
+      usuarioLogeado = sistema.obtenerElementoPorPropiedad(
         sistema.paseadores,
         "nombreUsuario",
         nombre
@@ -119,7 +152,7 @@ function registroUsuario() {
     return sistema.mostrarError("Ingrese correctamente el usuario.");
   } else {
     //   Verificar si usuario ya existe
-    let existeUsuario = sistema.obtenerUsuario(
+    let existeUsuario = sistema.obtenerElementoPorPropiedad(
       sistema.clientes,
       "nombreUsuario",
       usuario
@@ -155,12 +188,13 @@ function registroUsuario() {
   document.querySelector("#txtRegistroNombrePerro").value = "";
   document.querySelector("#slcRegistroTamanoPerro").value = "";
   document.querySelector("#pError").innerHTML = "Usuario creado existosamente";
-  usuarioLogeado = sistema.obtenerUsuario(
+  usuarioLogeado = sistema.obtenerElementoPorPropiedad(
     sistema.clientes,
     "nombreUsuario",
     usuario
   );
   mostrarBotones("cliente");
+  mostrarPaseadoresDisponibles();
 
   mostrarMenuOcultandoLoginYRegistro();
 }

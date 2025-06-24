@@ -27,8 +27,9 @@ class Contratacion {
 }
 
 class TamanioPerros {
-  constructor(id, tamanio) {
+  constructor(id, tamanio, cuposOcupados) {
     this.id = id;
     this.tamanio = tamanio;
+    this.cuposOcupados = cuposOcupados;
   }
 }
