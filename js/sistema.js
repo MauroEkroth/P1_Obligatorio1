@@ -78,7 +78,7 @@ class Sistema {
 
   listarPaseadoresDisponibles(cliente) {
     let paseadoresDisponibles = [];
-    let tamanio = this.obtenerElementoPorPropiedad(this.tamanioPerros, "tamanio", cliente.tamanioPerro);
+    let tamanio = this.obtenerElementoPorPropiedad(this.tamanioPerros, "id", cliente.tamanioPerro);
     for (let i = 0; i < this.paseadores.length; i++) {
       const paseador = this.paseadores[i];
       let cuposDisponibles = this.calcularCuposDisponibles(paseador);
@@ -186,6 +186,39 @@ class Sistema {
       return resultado;
     }
     return valido;
+  }
+
+  validarDatosRegistro(usuario, nombrePerro, tamanioPerro, password, rePassword) {    
+    if (!usuario) {
+      return "Ingrese correctamente el usuario."
+    } else {
+      //   Verificar si usuario ya existe
+      let existeUsuario = this.obtenerElementoPorPropiedad(
+        this.clientes,
+        "nombreUsuario",
+        usuario
+      );
+      if (!existeUsuario) {
+        existeUsuario = this.obtenerElementoPorPropiedad(
+          this.paseadores,
+          "nombreUsuario",
+          usuario)
+      }
+      if (existeUsuario) return "El nombre de usuario ya existe"
+    }
+
+    if (this.validarFormatoClave(password) !== true) {
+      return this.validarFormatoClave(password);
+      
+    }
+
+    if (password !== rePassword) return "Las contraseñas deben coincidir."
+
+    if (!nombrePerro) return "Ingrese correctamente el nombre del perro."
+
+    if (tamanioPerro === -1) return "Ingrese correctamente el tamaño del perro."
+
+    return
   }
 
   agregarCliente(unUsuario, unClave, unNombrePerro, unTamanioPerro) {

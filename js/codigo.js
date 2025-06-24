@@ -148,37 +148,11 @@ function registroUsuario() {
   let password = document.querySelector("#txtRegistroClave").value;
   let rePassword = document.querySelector("#txtRegistroRepetirClave").value;
 
-  if (!usuario) {
-    return sistema.mostrarError("Ingrese correctamente el usuario.");
-  } else {
-    //   Verificar si usuario ya existe
-    let existeUsuario = sistema.obtenerElementoPorPropiedad(
-      sistema.clientes,
-      "nombreUsuario",
-      usuario
-    );
-    if (existeUsuario) {
-      return sistema.mostrarError("El nombre de usuario ya existe");
-    }
-  }
+  const error = sistema.validarDatosRegistro(usuario, nombrePerro, tamanioPerro, password, rePassword)
 
-  if (sistema.validarFormatoClave(password) !== true) {
-    console.log(sistema.validarFormatoClave(password));
-    document.querySelector("#pError").innerHTML =
-      sistema.validarFormatoClave(password);
-    return;
-  }
-
-  if (password !== rePassword) {
-    return sistema.mostrarError("Las contraseñas deben coincidir.");
-  }
-
-  if (!nombrePerro) {
-    return sistema.mostrarError("Ingrese correctamente el nombre del perro.");
-  }
-
-  if (tamanioPerro === -1) {
-    return sistema.mostrarError("Ingrese correctamente el tamaño del perro.");
+  if (error) {
+    sistema.mostrarError(error)
+    return
   }
 
   sistema.agregarCliente(usuario, password, nombrePerro, tamanioPerro);
