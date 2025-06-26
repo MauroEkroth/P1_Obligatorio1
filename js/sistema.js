@@ -41,9 +41,6 @@ class Sistema {
     //Contrataciones
     this.contrataciones = [
       new Contratacion(1, "Pablo Ramirez", 1),
-      new Contratacion(2, "Miriam Ramirez", 1),
-      new Contratacion(3, "Daniel Gutierrez", 1),
-      new Contratacion(4, "Maria Sanchez", 1),
       new Contratacion(2, "Miriam Ramirez", 2),
       new Contratacion(3, "Daniel Gutierrez", 3),
       new Contratacion(4, "Maria Sanchez", 4),
