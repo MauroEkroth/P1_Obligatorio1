@@ -146,9 +146,6 @@ function registroUsuario() {
     return;
   }
 
-  let objetoTamanio = sistema.obtenerElementoPorPropiedad(sistema.tamanioPerros, "id", tamanioPerro);
-  tamanioPerro = objetoTamanio.tamanio;
-
   sistema.agregarCliente(usuario, password, nombrePerro, tamanioPerro);
   document.querySelector("#txtRegistroUsuario").value = "";
   document.querySelector("#txtRegistroClave").value = "";
