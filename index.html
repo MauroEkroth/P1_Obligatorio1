@@ -9,8 +9,8 @@
     <meta name="keywords" content="Paseadores, Perros, Paseos">
     <title>Servicio de Paseadores</title>
     <link rel="stylesheet" href="css/estilos.css">
-    <script src="js/sistema.js"></script>
     <script src="js/clases.js"></script>
+    <script src="js/sistema.js"></script>
     <script src="js/codigo.js"></script>
 </head>
 
@@ -26,8 +26,14 @@
                     <li id="btnSeccionRegistro" class="btnSeccion invitado">
                         <a>Registrar</a>
                     </li>
-                    <li id="btnSeccionUsuario" class="btnSeccion cliente">
-                        <a>Usuario</a>
+                    <li id="btnSeccionPaseadoresDisponibles" class="btnSeccion cliente">
+                        <a>Contratar Paseador</a>
+                    </li>
+                    <li id="btnSeccionListarPaseadores" class="btnSeccion cliente">
+                        <a>Listar Paseadores</a>
+                    </li>
+                    <li id="btnSeccionCancelarContratacion" class="btnSeccion cliente">
+                        <a>Cancelar Contratacion</a>
                     </li>
                     <li id="btnSeccionPaseador" class="btnSeccion paseador">
                         <a>Paseador</a>
@@ -86,7 +92,35 @@
                             <td>No hay paseadores disponibles en este momento</td>
                         </tr>
                     </tbody>
+                </table><br><br>
+
+                <h3>Seleccionar Paseador</h3>
+                <article>
+                    <select id="slcPaseadorSeleccionado" disabled="true"></select>
+                    <input type="button" value="Contratar" id="btnContratar" disabled="true">
+                </article>
+                <p id="pMensajeContratarPaseador"></p>
+            </section>
+
+            <section id="seccionListarPaseadores" class="seccion">
+                <h3>Todos los Paseadores</h3>
+
+                <table id="listaPaseadores">
+                    <tbody>
+                        <tr>
+                            <td>No hay paseadores en el sistema</td>
+                        </tr>
+                    </tbody>
                 </table>
+            </section>
+
+            <section id="seccionCancelarContratacion" class="seccion">
+                <h3>Contratacion Actual</h3>
+
+                <article id="contratacionActual">
+                    <p id="pPaseadorSolicitado"></p>
+                    <input type="button" value="Cancelar Contratacion" id="btnCancelarContratacion">
+                </article>
             </section>
         </main>
         <footer>
