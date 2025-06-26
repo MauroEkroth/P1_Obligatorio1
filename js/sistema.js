@@ -21,7 +21,7 @@ class Sistema {
       new Cliente("Domingo Garcia", "Qwer1234@!", "Duke", "Grande"),
       new Cliente("Manuela Leon", "Qwer1234@!", "Maya", "Mediano"),
       new Cliente("Manuel Leon", "Qwer1234@!", "Rex", "Grande"),
-      new Cliente("Pablo Torres", "Qwer1234@!", "Andrew", "Chico"),
+      new Cliente("Pablo Torres", "Qwer1234@!", "Andrew", "Chico")
     ];
 
     //Paseadores
@@ -39,17 +39,18 @@ class Sistema {
     ];
 
     //Contrataciones
+    this.ultimaIdContrataciones = 10;
     this.contrataciones = [
-      new Contratacion(1, "Pablo Ramirez", 1),
-      new Contratacion(2, "Miriam Ramirez", 2),
-      new Contratacion(3, "Daniel Gutierrez", 3),
-      new Contratacion(4, "Maria Sanchez", 4),
-      new Contratacion(5, "Celia Fernandez", 5),
-      new Contratacion(6, "Oscar Castillo", 6),
-      new Contratacion(7, "Joaquin Duran", 7),
-      new Contratacion(8, "Ana Castro", 8),
-      new Contratacion(9, "Verónica Rojas", 9),
-      new Contratacion(10, "Juan Fuentes", 10)
+      new Contratacion(1, "Aprobada", "Pablo Ramirez", 1),
+      new Contratacion(2, "Aprobada", "Miriam Ramirez", 2),
+      new Contratacion(3, "Aprobada", "Daniel Gutierrez", 3),
+      new Contratacion(4, "Aprobada", "Maria Sanchez", 4),
+      new Contratacion(5, "Aprobada", "Celia Fernandez", 5),
+      new Contratacion(6, "Aprobada", "Oscar Castillo", 6),
+      new Contratacion(7, "Aprobada", "Joaquin Duran", 7),
+      new Contratacion(8, "Aprobada", "Ana Castro", 8),
+      new Contratacion(9, "Aprobada", "Verónica Rojas", 9),
+      new Contratacion(10, "Aprobada", "Juan Fuentes", 10)
     ];
 
     this.tamanioPerros = [
@@ -100,17 +101,9 @@ class Sistema {
     let cuposDisponibles = paseador.cuposMaximos;
     for (let i = 0; i < this.contrataciones.length; i++) {
       const contratacion = this.contrataciones[i];
-      if (contratacion.paseador === paseador.id) {
-        let cliente = this.obtenerElementoPorPropiedad(
-          this.clientes,
-          "nombreUsuario",
-          contratacion.cliente
-        );
-        let tamanio = this.obtenerElementoPorPropiedad(
-          this.tamanioPerros,
-          "tamanio",
-          cliente.tamanioPerro
-        );
+      if (contratacion.paseador === paseador.id && contratacion.estado === "Aprobada") {
+        let cliente = this.obtenerElementoPorPropiedad(this.clientes, "nombreUsuario", contratacion.cliente);
+        let tamanio = this.obtenerElementoPorPropiedad(this.tamanioPerros, "tamanio", cliente.tamanioPerro);
         cuposDisponibles -= tamanio.cuposOcupados;
       }
     }
@@ -121,7 +114,7 @@ class Sistema {
     let perrosAsignados = 0;
     for (let i = 0; i < this.contrataciones.length; i++) {
       const contratacion = this.contrataciones[i];
-      if (contratacion.paseador === paseador.id) perrosAsignados++;
+      if (contratacion.paseador === paseador.id && contratacion.estado === "Aprobada") perrosAsignados++;
     }
     return perrosAsignados;
   }
@@ -254,8 +247,9 @@ class Sistema {
   }
 
   agregarCliente(unUsuario, unClave, unNombrePerro, unTamanioPerro) {
+    let tamanioPerro = this.obtenerElementoPorPropiedad(this.tamanioPerros, "id", unTamanioPerro);
     this.clientes.push(
-      new Cliente(unUsuario, unClave, unNombrePerro, unTamanioPerro)
+      new Cliente(unUsuario, unClave, unNombrePerro, tamanioPerro.tamanio)
     );
   }
 
@@ -356,7 +350,7 @@ class Sistema {
   }
 
   procesarAprobacion(contratacion, paseador) {
-    if (contratacion.id !== paseador.id) {
+    if (contratacion.paseador !== paseador.id) {
       contratacion.estado = "Rechazada";
       return false;
     }
@@ -412,6 +406,7 @@ class Sistema {
     for (let i = 0; i < this.contrataciones.length; i++) {
       let contratacion = this.contrataciones[i];
       if (contratacion.paseador === paseador.id && contratacion.estado === 'Aprobada') {
+
         let cliente = this.obtenerElementoPorPropiedad(
           this.clientes,
           "nombreUsuario",
@@ -451,5 +446,11 @@ class Sistema {
       }%</p>
               </div>`;
     return tabla;
+  }
+
+  agregarContratacion(nombreCliente, idPaseador) {
+    sistema.ultimaIdContrataciones++;
+    let contratacion = new Contratacion(sistema.ultimaIdContrataciones, "Pendiente", nombreCliente, idPaseador);
+    sistema.contrataciones.push(contratacion);
   }
 }

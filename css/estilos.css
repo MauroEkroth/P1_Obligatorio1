@@ -13,6 +13,11 @@ body {
     flex-direction: column;
 }
 
+#seccionPaseadoresDisponibles article {
+    display: flex;
+    flex-direction: row;
+}
+
 /* Estilos contenedor de todo el contenido  */
 main {
     padding: 20px;
@@ -192,4 +197,8 @@ footer a {
     font-size: 14px;
     font-weight: 600;
     text-decoration: none;
+}
+
+.seccion {
+    display: none;
 }
