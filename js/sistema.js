@@ -309,7 +309,7 @@ class Sistema {
       }
     }
     let tabla = `
-      <h2>Contrataciones ${estadoContratacion}</h2>
+      <h3>Contrataciones ${estadoContratacion}</h3>
       <table>
       <thead>
       <th>Solicitante</th>
@@ -333,13 +333,17 @@ class Sistema {
       <td>${cliente.tamanioPerro}</td>`
 
       if (unaContratacion.estado === "Pendiente") {
-          tabla += `<td><button class="btnAprobar" id="${unaContratacion.id}">Procesar</button></td>`;
-        } else {
-          tabla += `<td>${unaContratacion.estado}</td>`;
-        }
-  
+        tabla += `<td id="btnContenedor"><button class="btnAprobar" id="${unaContratacion.id}">Procesar</button></td>`;
+      } else if (unaContratacion.estado === "Aprobada") {
+        tabla += `<td>La solicitud fue Aprobada</td>`;
+      } else if (unaContratacion.estado === "Rechazada 1") {
+        tabla += `<td> La solicitud fue rechazada, no quedan suficientes cupos disponible </td>`
+      } else if (unaContratacion.estado === "Rechazada 2") {
+        tabla += `<td>La solicitud fue rechazada, no se puede pasear perros grandes con chicos</td>`
+      } else {
+        tabla += `<td>El paseador no coincide con el solicitado para esta contratación.</td>`
+      }
     }
-
     tabla += "</tbody></table>";
 
     return tabla;
@@ -365,7 +369,7 @@ class Sistema {
     );
 
     if (cuposDisponibles < tamanio.cuposOcupados) {
-      contratacion.estado = "Rechazada | no hay cupos disponibles";
+      contratacion.estado = "Rechazada 1";
       return false;
     }
 
@@ -376,7 +380,7 @@ class Sistema {
     );
     if (incompatibilidad === cliente.tamanioPerro) {
       contratacion.estado =
-        "Rechazada | no puede ir un perro grande con uno chico";
+        "Rechazada 2";
       return false;
     }
 
@@ -387,10 +391,10 @@ class Sistema {
 
 
 
-  
+
   listarPerrosAsignados(paseador) {
     let tabla = `
-    <h2>Perros Asignados</h2>
+    <h3>Perros Asignados</h3>
     <table>
     <thead>
     <th>Nombre</th>
@@ -398,29 +402,48 @@ class Sistema {
     </thead>
     <tbody>`;
 
+    let cuposOcupados = 0
     for (let i = 0; i < this.contrataciones.length; i++) {
       let contratacion = this.contrataciones[i];
       if (contratacion.paseador === paseador.id && contratacion.estado === 'Aprobada') {
-        
+
         let cliente = this.obtenerElementoPorPropiedad(
           this.clientes,
           "nombreUsuario",
           contratacion.cliente
         );
-          tabla += `<tr>
+
+        let tamanioPerro = cliente.tamanioPerro
+        if (tamanioPerro === "Chico") {
+          tamanioPerro = 1;
+        } else if (tamanioPerro === "Mediano") {
+          tamanioPerro = 2;
+        } else {
+          tamanioPerro = 4;
+        }
+
+        cuposOcupados += tamanioPerro
+
+        tabla += `<tr>
             <td>${cliente.nombrePerro}</td>
             <td>${cliente.tamanioPerro}</td>
           </tr>`;
       }
     }
-    let cuposOcupados = paseador.cuposMaximos - sistema.calcularCuposDisponibles(paseador);
-        tabla += "</tbody></table>";
-        tabla += `<div>
-        <p>Cupos Ocupados: ${cuposOcupados}</p>
+    if (cuposOcupados === 0) {
+      tabla += `<p>No hay perros asignados actualmente.</p>`;
+    }
+
+    tabla += "</tbody></table>";
+    tabla += `<div>
+        <p>Cupos Ocupados: ${paseador.cuposMaximos -
+      cuposOcupados
+      }</p>
           <p>Cupos Maximos: ${paseador.cuposMaximos} </p>
           <p>Porcentaje de ocupacion: ${parseInt((cuposOcupados /
-            paseador.cuposMaximos) * 100)
-          }%</p>
+        paseador.cuposMaximos) *
+        100)
+      }%</p>
               </div>`;
     return tabla;
   }
