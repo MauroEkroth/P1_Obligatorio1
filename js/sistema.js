@@ -346,7 +346,7 @@ class Sistema {
   }
 
   procesarAprobacion(contratacion, paseador) {
-    if (contratacion.id !== paseador.id) {
+    if (contratacion.paseador !== paseador.id) {
       contratacion.estado = "Rechazada";
       return false;
     }

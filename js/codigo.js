@@ -328,11 +328,6 @@ function botonProcesar() {
   if (contratacion) {
     let aprobado = sistema.procesarAprobacion(contratacion, usuarioLogeado);
     mostrarContratacionesPendientes();
-    if (aprobado) {
-      document.querySelector("#btnContenedor").innerHTML = "<p>Aprobado</p>";
-    } else {
-      document.querySelector("#btnContenedor").innerHTML = "<p> Rechazado </p>";
-    }
   }
 }
 
