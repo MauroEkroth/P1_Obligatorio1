@@ -400,7 +400,6 @@ class Sistema {
 
     for (let i = 0; i < this.contrataciones.length; i++) {
       let contratacion = this.contrataciones[i];
-      console.log(contratacion);
       if (contratacion.id === paseador.id && contratacion.estado === 'Aprobada') {
         
         let cliente = this.obtenerElementoPorPropiedad(
