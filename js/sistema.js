@@ -217,13 +217,13 @@ class Sistema {
       return "Ingrese correctamente el usuario.";
     } else {
       //   Verificar si usuario ya existe
-      let existeUsuario = this.obtenerElementoPorPropiedad(
+      let existeUsuario = this.obtenerElementoPorPropiedadCaseInsensitive(
         this.clientes,
         "nombreUsuario",
         usuario
       );
       if (!existeUsuario) {
-        existeUsuario = this.obtenerElementoPorPropiedad(
+        existeUsuario = this.obtenerElementoPorPropiedadCaseInsensitive(
           this.paseadores,
           "nombreUsuario",
           usuario
@@ -287,6 +287,18 @@ class Sistema {
     for (let i = 0; i < arrElementos.length; i++) {
       const unElemento = arrElementos[i];
       if (unElemento[propiedad] === busqueda) {
+        objeto = unElemento;
+        break;
+      }
+    }
+    return objeto;
+  }
+
+  obtenerElementoPorPropiedadCaseInsensitive(arrElementos, propiedad, busqueda) {
+    let objeto = null;
+    for (let i = 0; i < arrElementos.length; i++) {
+      const unElemento = arrElementos[i];
+      if (unElemento[propiedad].toLowerCase() === busqueda.toLowerCase()) {
         objeto = unElemento;
         break;
       }
