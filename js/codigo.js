@@ -59,6 +59,13 @@ function mostrarBotones(tipo) {
   }
 }
 
+function cargarDatosPerfilCliente() {
+  mostrarBotones("cliente");
+  cargarContratacionActual();
+  mostrarPaseadoresDisponibles();
+  cargarPaseadores();
+}
+
 function ocultarBotones() {
   let botonesOcultar = document.querySelectorAll(".btnSeccion");
   for (let i = 0; i < botonesOcultar.length; i++) {
@@ -86,9 +93,7 @@ function hacerLogin() {
 
     if (usuarioLogeado) {
       // cargar y mostrar informacion relevante al cliente
-      mostrarBotones("cliente");
-      cargarContratacionActual();
-      mostrarPaseadoresDisponibles();
+      cargarDatosPerfilCliente();
     } else {
       usuarioLogeado = sistema.obtenerElementoPorPropiedad(
         sistema.paseadores,
@@ -152,16 +157,14 @@ function registroUsuario() {
   document.querySelector("#txtRegistroRepetirClave").value = "";
   document.querySelector("#txtRegistroNombrePerro").value = "";
   document.querySelector("#slcRegistroTamanoPerro").value = "";
-  document.querySelector("#pError").innerHTML = "Usuario creado existosamente";
+  document.querySelector("#pError").innerHTML = "";
   usuarioLogeado = sistema.obtenerElementoPorPropiedad(
     sistema.clientes,
     "nombreUsuario",
     usuario
   );
   // cargar y mostrar informacion relevante al cliente
-  mostrarBotones("cliente");
-  cargarContratacionActual();
-  mostrarPaseadoresDisponibles();
+  cargarDatosPerfilCliente();
   mostrarMenuOcultandoLoginYRegistro();
 }
 
