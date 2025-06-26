@@ -22,7 +22,6 @@ class Sistema {
       new Cliente("Manuela Leon", "Qwer1234@!", "Maya", "Mediano"),
       new Cliente("Manuel Leon", "Qwer1234@!", "Rex", "Grande"),
       new Cliente("Pablo Torres", "Qwer1234@!", "Andrew", "Chico"),
-      new Cliente("test", "1", "Andrew", "Chico")
     ];
 
     //Paseadores
@@ -340,7 +339,7 @@ class Sistema {
       <td>${cliente.tamanioPerro}</td>`
 
       if (unaContratacion.estado === "Pendiente") {
-          tabla += `<td><button class="btnAprobar" id="${unaContratacion.id}">Procesar</button></td>`;
+          tabla += `<td id="btnContenedor"><button class="btnAprobar" id="${unaContratacion.id}">Procesar</button></td>`;
         } else {
           tabla += `<td>${unaContratacion.estado}</td>`;
         }
@@ -405,30 +404,44 @@ class Sistema {
     </thead>
     <tbody>`;
 
+    let cuposOcupados= 0
     for (let i = 0; i < this.contrataciones.length; i++) {
       let contratacion = this.contrataciones[i];
-      console.log(contratacion);
-      if (contratacion.id === paseador.id && contratacion.estado === 'Aprobada') {
-        
+      if (contratacion.paseador === paseador.id && contratacion.estado === 'Aprobada') {
         let cliente = this.obtenerElementoPorPropiedad(
           this.clientes,
           "nombreUsuario",
           contratacion.cliente
         );
+        
+        let tamanioPerro = cliente.tamanioPerro
+          if (tamanioPerro === "Chico") {
+          tamanioPerro = 1;
+        } else if (tamanioPerro === "Mediano") {
+          tamanioPerro = 2;
+        } else {
+          tamanioPerro = 4;
+        }
+        
+        cuposOcupados += tamanioPerro
+
           tabla += `<tr>
             <td>${cliente.nombrePerro}</td>
             <td>${cliente.tamanioPerro}</td>
           </tr>`;
       }
     }
+     if (cuposOcupados === 0) {
+    tabla += `<p>No hay perros asignados actualmente.</p>`;
+     }
+
         tabla += "</tbody></table>";
         tabla += `<div>
         <p>Cupos Ocupados: ${paseador.cuposMaximos -
-          sistema.calcularCuposDisponibles(paseador)
+          cuposOcupados
           }</p>
           <p>Cupos Maximos: ${paseador.cuposMaximos} </p>
-          <p>Porcentaje de ocupacion: ${parseInt(((paseador.cuposMaximos -
-            sistema.calcularCuposDisponibles(paseador)) /
+          <p>Porcentaje de ocupacion: ${parseInt((cuposOcupados /
             paseador.cuposMaximos) *
           100)
           }%</p>
