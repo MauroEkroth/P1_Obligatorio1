@@ -41,16 +41,16 @@ class Sistema {
     //Contrataciones
     this.ultimaIdContrataciones = 10;
     this.contrataciones = [
-      new Contratacion(1, "Aprovado", "Pablo Ramirez", 1),
-      new Contratacion(2, "Aprovado", "Miriam Ramirez", 2),
-      new Contratacion(3, "Aprovado", "Daniel Gutierrez", 3),
-      new Contratacion(4, "Aprovado", "Maria Sanchez", 4),
-      new Contratacion(5, "Aprovado", "Celia Fernandez", 5),
-      new Contratacion(6, "Aprovado", "Oscar Castillo", 6),
-      new Contratacion(7, "Aprovado", "Joaquin Duran", 7),
-      new Contratacion(8, "Aprovado", "Ana Castro", 8),
-      new Contratacion(9, "Aprovado", "Verónica Rojas", 9),
-      new Contratacion(10, "Aprovado", "Juan Fuentes", 10)
+      new Contratacion(1, "Aprobada", "Pablo Ramirez", 1),
+      new Contratacion(2, "Aprobada", "Miriam Ramirez", 2),
+      new Contratacion(3, "Aprobada", "Daniel Gutierrez", 3),
+      new Contratacion(4, "Aprobada", "Maria Sanchez", 4),
+      new Contratacion(5, "Aprobada", "Celia Fernandez", 5),
+      new Contratacion(6, "Aprobada", "Oscar Castillo", 6),
+      new Contratacion(7, "Aprobada", "Joaquin Duran", 7),
+      new Contratacion(8, "Aprobada", "Ana Castro", 8),
+      new Contratacion(9, "Aprobada", "Verónica Rojas", 9),
+      new Contratacion(10, "Aprobada", "Juan Fuentes", 10)
     ];
 
     this.tamanioPerros = [
@@ -101,7 +101,7 @@ class Sistema {
     let cuposDisponibles = paseador.cuposMaximos;
     for (let i = 0; i < this.contrataciones.length; i++) {
       const contratacion = this.contrataciones[i];
-      if (contratacion.paseador === paseador.id && contratacion.estado === "Aprovado") {
+      if (contratacion.paseador === paseador.id && contratacion.estado === "Aprobada") {
         let cliente = this.obtenerElementoPorPropiedad(this.clientes, "nombreUsuario", contratacion.cliente);
         let tamanio = this.obtenerElementoPorPropiedad(this.tamanioPerros, "tamanio", cliente.tamanioPerro);
         cuposDisponibles -= tamanio.cuposOcupados;
@@ -114,7 +114,7 @@ class Sistema {
     let perrosAsignados = 0;
     for (let i = 0; i < this.contrataciones.length; i++) {
       const contratacion = this.contrataciones[i];
-      if (contratacion.paseador === paseador.id && contratacion.estado === "Aprovado") perrosAsignados++;
+      if (contratacion.paseador === paseador.id && contratacion.estado === "Aprobada") perrosAsignados++;
     }
     return perrosAsignados;
   }
@@ -400,7 +400,7 @@ class Sistema {
 
     for (let i = 0; i < this.contrataciones.length; i++) {
       let contratacion = this.contrataciones[i];
-      if (contratacion.id === paseador.id && contratacion.estado === 'Aprobada') {
+      if (contratacion.paseador === paseador.id && contratacion.estado === 'Aprobada') {
         
         let cliente = this.obtenerElementoPorPropiedad(
           this.clientes,
@@ -413,16 +413,13 @@ class Sistema {
           </tr>`;
       }
     }
+    let cuposOcupados = paseador.cuposMaximos - sistema.calcularCuposDisponibles(paseador);
         tabla += "</tbody></table>";
         tabla += `<div>
-        <p>Cupos Ocupados: ${paseador.cuposMaximos -
-          sistema.calcularCuposDisponibles(paseador)
-          }</p>
+        <p>Cupos Ocupados: ${cuposOcupados}</p>
           <p>Cupos Maximos: ${paseador.cuposMaximos} </p>
-          <p>Porcentaje de ocupacion: ${parseInt(((paseador.cuposMaximos -
-            sistema.calcularCuposDisponibles(paseador)) /
-            paseador.cuposMaximos) *
-          100)
+          <p>Porcentaje de ocupacion: ${parseInt((cuposOcupados /
+            paseador.cuposMaximos) * 100)
           }%</p>
               </div>`;
     return tabla;
