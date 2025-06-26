@@ -26,8 +26,7 @@ function inicio() {
     botones[i].addEventListener("click", mostrarSeccion);
   }
   //pantalla inicial del sitio es login
-  document.querySelector("#seccionLogin").style.display = "block";
-
+  mostrarSeccionPorId("seccionLogin");
 }
 
 //  ----------------- Navegacion -----------------
@@ -329,14 +328,8 @@ function botonProcesar() {
   }
 
   if (contratacion) {
-    let aprobado = sistema.procesarAprobacion(contratacion, usuarioLogeado);
-
-    if (aprobado) {
-      document.querySelector("#btnContenedor").innerHTML = "<p>Aprobado</p>";
-    } else {
-      document.querySelector("#btnContenedor").innerHTML = "<p> Rechazado </p>";
-    }
-    
+    sistema.procesarAprobacion(contratacion, usuarioLogeado, "Aprobada");
+    sistema.procesarContrataciones(usuarioLogeado);
     mostrarContratacionesPendientes();
   }
 }
