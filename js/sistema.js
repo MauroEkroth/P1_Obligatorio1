@@ -78,13 +78,21 @@ class Sistema {
 
   listarPaseadoresDisponibles(cliente) {
     let paseadoresDisponibles = [];
-    let tamanio = this.obtenerElementoPorPropiedad(this.tamanioPerros, "id", cliente.tamanioPerro);
+    let tamanio = this.obtenerElementoPorPropiedad(
+      this.tamanioPerros,
+      "tamanio",
+      cliente.tamanioPerro
+    );
     for (let i = 0; i < this.paseadores.length; i++) {
       const paseador = this.paseadores[i];
       let cuposDisponibles = this.calcularCuposDisponibles(paseador);
       if (cuposDisponibles < tamanio.cuposOcupados) continue;
-      let tamanioNoCompatible = this.verificarCompatibilidadTamanios(paseador, cliente);
-      if (tamanioNoCompatible !== cliente.tamanioPerro) paseadoresDisponibles.push(paseador);
+      let tamanioNoCompatible = this.verificarCompatibilidadTamanios(
+        paseador,
+        cliente
+      );
+      if (tamanioNoCompatible !== cliente.tamanioPerro)
+        paseadoresDisponibles.push(paseador);
     }
     return paseadoresDisponibles;
   }
@@ -94,8 +102,16 @@ class Sistema {
     for (let i = 0; i < this.contrataciones.length; i++) {
       const contratacion = this.contrataciones[i];
       if (contratacion.paseador === paseador.id) {
-        let cliente = this.obtenerElementoPorPropiedad(this.clientes, "nombreUsuario", contratacion.cliente);
-        let tamanio = this.obtenerElementoPorPropiedad(this.tamanioPerros, "tamanio", cliente.tamanioPerro);
+        let cliente = this.obtenerElementoPorPropiedad(
+          this.clientes,
+          "nombreUsuario",
+          contratacion.cliente
+        );
+        let tamanio = this.obtenerElementoPorPropiedad(
+          this.tamanioPerros,
+          "tamanio",
+          cliente.tamanioPerro
+        );
         cuposDisponibles -= tamanio.cuposOcupados;
       }
     }
@@ -116,11 +132,21 @@ class Sistema {
     for (let i = 0; i < this.contrataciones.length; i++) {
       const contratacion = this.contrataciones[i];
       if (contratacion.paseador === paseador.id) {
-        let clienteContratacion = this.obtenerElementoPorPropiedad(this.clientes, "nombreUsuario", contratacion.cliente);
-        if (clienteContratacion.tamanioPerro === "Chico" && cliente.tamanioPerro === "Grande") {
+        let clienteContratacion = this.obtenerElementoPorPropiedad(
+          this.clientes,
+          "nombreUsuario",
+          contratacion.cliente
+        );
+        if (
+          clienteContratacion.tamanioPerro === "Chico" &&
+          cliente.tamanioPerro === "Grande"
+        ) {
           tamanioNoValido = "Grande";
           break;
-        } else if (clienteContratacion.tamanioPerro === "Grande" && cliente.tamanioPerro === "Chico") {
+        } else if (
+          clienteContratacion.tamanioPerro === "Grande" &&
+          cliente.tamanioPerro === "Chico"
+        ) {
           tamanioNoValido = "Chico";
           break;
         }
@@ -188,9 +214,15 @@ class Sistema {
     return valido;
   }
 
-  validarDatosRegistro(usuario, nombrePerro, tamanioPerro, password, rePassword) {    
+  validarDatosRegistro(
+    usuario,
+    nombrePerro,
+    tamanioPerro,
+    password,
+    rePassword
+  ) {
     if (!usuario) {
-      return "Ingrese correctamente el usuario."
+      return "Ingrese correctamente el usuario.";
     } else {
       //   Verificar si usuario ya existe
       let existeUsuario = this.obtenerElementoPorPropiedad(
@@ -202,23 +234,24 @@ class Sistema {
         existeUsuario = this.obtenerElementoPorPropiedad(
           this.paseadores,
           "nombreUsuario",
-          usuario)
+          usuario
+        );
       }
-      if (existeUsuario) return "El nombre de usuario ya existe"
+      if (existeUsuario) return "El nombre de usuario ya existe";
     }
 
     if (this.validarFormatoClave(password) !== true) {
       return this.validarFormatoClave(password);
-      
     }
 
-    if (password !== rePassword) return "Las contraseñas deben coincidir."
+    if (password !== rePassword) return "Las contraseñas deben coincidir.";
 
-    if (!nombrePerro) return "Ingrese correctamente el nombre del perro."
+    if (!nombrePerro) return "Ingrese correctamente el nombre del perro.";
 
-    if (tamanioPerro === -1) return "Ingrese correctamente el tamaño del perro."
+    if (tamanioPerro === -1)
+      return "Ingrese correctamente el tamaño del perro.";
 
-    return
+    return;
   }
 
   agregarCliente(unUsuario, unClave, unNombrePerro, unTamanioPerro) {
@@ -268,7 +301,138 @@ class Sistema {
     return objeto;
   }
 
-  mostrarError(mensaje) {
-    document.querySelector("#pError").innerHTML = mensaje;
+  //
+
+  listadarContrataciones(estadoContratacion) {
+    let pendientes = [];
+    for (let i = 0; i < this.contrataciones.length; i++) {
+      const unaContratacion = this.contrataciones[i];
+
+      if (
+        unaContratacion.estado === estadoContratacion &&
+        unaContratacion.paseador === usuarioLogeado.id
+      ) {
+        pendientes.push(unaContratacion);
+      }
+    }
+    let tabla = `
+      <h2>Contrataciones ${estadoContratacion}</h2>
+      <table>
+      <thead>
+      <th>Solicitante</th>
+      <th>Perro</th>
+      <th>Tamano</th>
+      <th>Estado</th>
+    </thead>
+    <tbody>`;
+
+    for (let i = 0; i < pendientes.length; i++) {
+      const unaContratacion = pendientes[i];
+      const cliente = this.obtenerElementoPorPropiedad(
+        this.clientes,
+        "nombreUsuario",
+        unaContratacion.cliente
+      );
+
+      tabla += `<tr>
+      <td>${cliente.nombreUsuario}</td>
+      <td>${cliente.nombrePerro} </td>
+      <td>${cliente.tamanioPerro}</td>`
+
+      if (unaContratacion.estado === "Pendiente") {
+          tabla += `<td><button class="btnAprobar" id="${unaContratacion.id}">Procesar</button></td>`;
+        } else {
+          tabla += `<td>${unaContratacion.estado}</td>`;
+        }
+  
+    }
+
+    tabla += "</tbody></table>";
+
+    return tabla;
+  }
+
+  procesarAprobacion(contratacion, paseador) {
+    if (contratacion.id !== paseador.id) {
+      contratacion.estado = "Rechazada";
+      return false;
+    }
+
+    // Validación de cupos disponibles
+    let cuposDisponibles = this.calcularCuposDisponibles(paseador);
+    let cliente = this.obtenerElementoPorPropiedad(
+      this.clientes,
+      "nombreUsuario",
+      contratacion.cliente
+    );
+    let tamanio = this.obtenerElementoPorPropiedad(
+      this.tamanioPerros,
+      "tamanio",
+      cliente.tamanioPerro
+    );
+
+    if (cuposDisponibles < tamanio.cuposOcupados) {
+      contratacion.estado = "Rechazada | no hay cupos disponibles";
+      return false;
+    }
+
+    // Validar compatibilidad de tamaño
+    let incompatibilidad = this.verificarCompatibilidadTamanios(
+      paseador,
+      cliente
+    );
+    if (incompatibilidad === cliente.tamanioPerro) {
+      contratacion.estado =
+        "Rechazada | no puede ir un perro grande con uno chico";
+      return false;
+    }
+
+    // Si pasa todas las validaciones, se aprueba
+    contratacion.estado = "Aprobada";
+    return true;
+  }
+
+
+
+  
+  listarPerrosAsignados(paseador) {
+    let tabla = `
+    <h2>Perros Asignados</h2>
+    <table>
+    <thead>
+    <th>Nombre</th>
+    <th>Tamano</th>
+    </thead>
+    <tbody>`;
+
+    for (let i = 0; i < this.contrataciones.length; i++) {
+      let contratacion = this.contrataciones[i];
+      console.log(contratacion);
+      if (contratacion.id === paseador.id && contratacion.estado === 'Aprobada') {
+        
+        let cliente = this.obtenerElementoPorPropiedad(
+          this.clientes,
+          "nombreUsuario",
+          contratacion.cliente
+        );
+          tabla += `<tr>
+            <td>${cliente.nombrePerro}</td>
+            <td>${cliente.tamanioPerro}</td>
+          </tr>`;
+      }
+    }
+        tabla += "</tbody></table>";
+        tabla += `<div>
+        <p>Cupos Ocupados: ${paseador.cuposMaximos -
+          sistema.calcularCuposDisponibles(paseador)
+          }</p>
+          <p>Cupos Maximos: ${paseador.cuposMaximos} </p>
+          <p>Porcentaje de ocupacion: ${parseInt(((paseador.cuposMaximos -
+            sistema.calcularCuposDisponibles(paseador)) /
+            paseador.cuposMaximos) *
+          100)
+          }%</p>
+              </div>`;
+    return tabla;
   }
 }
