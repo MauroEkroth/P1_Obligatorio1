@@ -1,9 +1,10 @@
 class Cliente {
-  constructor(nombreUsuario, clave, nombrePerro, tamanioPerro) {
+  constructor(nombreUsuario, clave, nombrePerro, tamanioPerro, cuposOcupados) {
     this.nombreUsuario = nombreUsuario;
     this.clave = clave;
     this.nombrePerro = nombrePerro;
     this.tamanioPerro = tamanioPerro;
+    this.cuposOcupados = cuposOcupados;
   }
 }
 

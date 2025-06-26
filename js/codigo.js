@@ -13,6 +13,12 @@ function inicio() {
   document.querySelector("#btnSeccionSalir").addEventListener("click", salir);
   document.querySelector("#btnContratar").addEventListener("click", contratarPaseador);
   document.querySelector("#btnCancelarContratacion").addEventListener("click", cancelarContratacion);
+  document
+    .querySelector("#btnSeccionListadoContrataciones")
+    .addEventListener("click", mostrarContratacionesPendientes);
+  document
+    .querySelector("#btnSeccionListadoPerrosAsignados")
+    .addEventListener("click", consultaPerrosAsignados);
 
   //eventos de navegacion
   let botones = document.querySelectorAll(".btnSeccion");
@@ -21,6 +27,7 @@ function inicio() {
   }
   //pantalla inicial del sitio es login
   document.querySelector("#seccionLogin").style.display = "block";
+
 }
 
 //  ----------------- Navegacion -----------------
@@ -89,6 +96,8 @@ function hacerLogin() {
         nombre
       );
       mostrarBotones("paseador");
+      mostrarSeccionPorId("seccionListadoContrataciones");
+      mostrarContratacionesPendientes();
     }
 
     mostrarMenuOcultandoLoginYRegistro();
@@ -124,37 +133,21 @@ function registroUsuario() {
   let password = document.querySelector("#txtRegistroClave").value;
   let rePassword = document.querySelector("#txtRegistroRepetirClave").value;
 
-  if (!usuario) {
-    return sistema.mostrarError("Ingrese correctamente el usuario.");
-  } else {
-    //   Verificar si usuario ya existe
-    let existeUsuario = sistema.obtenerElementoPorPropiedad(
-      sistema.clientes,
-      "nombreUsuario",
-      usuario
-    );
-    if (existeUsuario) {
-      return sistema.mostrarError("El nombre de usuario ya existe");
-    }
-  }
+  const error = sistema.validarDatosRegistro(
+    usuario,
+    nombrePerro,
+    tamanioPerro,
+    password,
+    rePassword
+  );
 
-  if (sistema.validarFormatoClave(password) !== true) {
-    document.querySelector("#pError").innerHTML =
-      sistema.validarFormatoClave(password);
+  if (error) {
+    document.querySelector("#pError").innerHTML = error;
     return;
   }
 
-  if (password !== rePassword) {
-    return sistema.mostrarError("Las contraseñas deben coincidir.");
-  }
-
-  if (!nombrePerro) {
-    return sistema.mostrarError("Ingrese correctamente el nombre del perro.");
-  }
-
-  if (tamanioPerro === -1) {
-    return sistema.mostrarError("Ingrese correctamente el tamaño del perro.");
-  }
+  let objetoTamanio = sistema.obtenerElementoPorPropiedad(sistema.tamanioPerros, "id", tamanioPerro);
+  tamanioPerro = objetoTamanio.tamanio;
 
   sistema.agregarCliente(usuario, password, nombrePerro, tamanioPerro);
   document.querySelector("#txtRegistroUsuario").value = "";
@@ -295,4 +288,63 @@ function cancelarContratacion() {
   mostrarPaseadoresDisponibles();
   mostrarSeccionPorId("seccionCancelarContratacion");
   cargarContratacionActual();
+}
+//   ------------- Mostrar Contrataciones paseadores----------
+
+function mostrarContratacionesPendientes() {
+  if (!usuarioLogeado) return;
+
+  ocultarSecciones();
+  let estados = ["Pendiente", "Aprobada", "Rechazada"];
+  let tabla = "";
+  for (let i = 0; i < estados.length; i++) {
+    tabla += sistema.listadarContrataciones(estados[i]);
+  }
+
+  let contenedor = document.querySelector("#tablaContratacionesPendientes");
+  if (!tabla) {
+    contenedor.innerHTML = "<p>No se encontraron solicitudes.</p>";
+  } else {
+    contenedor.innerHTML = tabla;
+  }
+  document.querySelector("#seccionListadoContrataciones").style.display =
+    "block";
+
+
+  let botonesAprobar = document.querySelectorAll(".btnAprobar");
+  for (let i = 0; i < botonesAprobar.length; i++) {
+    botonesAprobar[i].addEventListener("click", botonProcesar);
+  }
+}
+
+function botonProcesar() {
+  let idBoton = this.id;
+
+  let contratacion = null;
+  for (let j = 0; j < sistema.contrataciones.length; j++) {
+    if (sistema.contrataciones[j].id == idBoton) {
+      contratacion = sistema.contrataciones[j];
+      break;
+    }
+  }
+
+  if (contratacion) {
+    let aprobado = sistema.procesarAprobacion(contratacion, usuarioLogeado);
+    mostrarContratacionesPendientes();
+    if (aprobado) {
+      document.querySelector("#btnContenedor").innerHTML = "<p>Aprobado</p>";
+    } else {
+      document.querySelector("#btnContenedor").innerHTML = "<p> Rechazado </p>";
+    }
+  }
+}
+
+
+//  ------------- Consulta de perros asignados a paseadores----------
+
+
+function consultaPerrosAsignados() {
+  let tabla = ''
+  tabla = sistema.listarPerrosAsignados(usuarioLogeado)
+  document.querySelector("#tablaPerrosAsignados").innerHTML = tabla
 }
