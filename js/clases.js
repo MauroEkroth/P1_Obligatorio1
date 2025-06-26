@@ -19,9 +19,9 @@ class Paseador {
 }
 
 class Contratacion {
-  constructor(id, cliente, paseador) {
+  constructor(id, estado, cliente, paseador) {
     this.id = id;
-    this.estado = "Pendiente";
+    this.estado = estado;
     this.cliente = cliente;
     this.paseador = paseador;
   }
